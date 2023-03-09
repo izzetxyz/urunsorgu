@@ -11,7 +11,7 @@
             <% if (locals.validation_error != undefined || locals.success_message != undefined || locals.login_error != undefined) { %>
               <%- include('../../partials/_mesaj') %> 
            <% } %>
-          <form class="text-center" action="/cycode/login" method="post">
+          <form class="text-center" action="/aartigiris/login" method="post">
             <div class="mb-3"><input class="form-control" type="text" name="kullaniciAdi" placeholder="Username"></div>
             <div class="mb-3"><input class="form-control" type="password" name="sifre" placeholder="Password"></div>
             <div class="mb-3"><button type="submit" class="btn btn-primary d-block w-100">Login</button></div>

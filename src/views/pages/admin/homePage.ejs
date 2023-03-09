@@ -1,14 +1,98 @@
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" />
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<div class="container">
-    <div class="row">
-      <div class="col text-center">
-        <h1>Admin Paneline Hoşgeldiniz!</h1>
-      </div>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Kullanıcı Ekle/Firma Ekle Formu</title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+	<div class="container">
+		<h2>Firmaya Kullanıcı Ekle/Firma Ekle </h2>
+		<!-- Kullanıcı Ekle / Firma Ekle Seçenekleri -->
+		<div class="form-group">
+			<label for="secim">Seçim Yapın:</label>
+			<select class="form-control" id="secim" onchange="formuGoster()">
+				<option value="0">Firma Ekle</option>
+				<option value="1">Kullanıcı Ekle</option>
+			</select>
+		</div>
+
+		<!-- Firma Ekle Formu -->
+		<div id="firmaEkle" style="display:none">
+			<form action="/aartigiris/firmaekle" method="post" enctype="application/x-www-form-urlencoded">
+				<div class="form-group">
+					<label for="firmaAdi">Firma Adı:</label>
+					<input name="CompanyName" type="text" class="form-control" id="firmaAdi">
+				</div>
+				<div class="form-group">
+					<label for="sqlBaglantiIP">SQL Bağlantı IP:</label>
+					<input name="SqlIP" type="text" class="form-control" id="sqlBaglantiIP">
+				</div>
+				<div class="form-group">
+					<label for="sqlBaglantiPort">SQL Bağlantı Port:</label>
+					<input name="SQLPort" type="text" class="form-control" id="sqlBaglantiPort">
+				</div>
+				<div class="form-group">
+					<label for="sqlUsername">SQL Kullanıcı Adı:</label>
+					<input name="sqlUsername" type="text" class="form-control" id="sqlUsername">
+				</div>
+				<div class="form-group">
+					<label for="sqlPassword">SQL Parolası:</label>
+					<input name="sqlPassword" type="text" class="form-control" id="sqlPassword">
+				</div>
+				<div class="form-group">
+					<label for="veritabaniAdi">Veritabanı Adı:</label>
+					<input name="DatabaseName" type="text" class="form-control" id="veritabaniAdi">
+				</div>
+				<button type="submit" class="btn btn-primary">Ekle</button>
+			</form>
+		</div>
+
+		<!-- Kullanıcı Ekle Formu -->
+		<div id="kullaniciEkle" style="display:none">
+			<form action="/aartigiris/kullaniciEkle" method="post" enctype="application/x-www-form-urlencoded">
+				<div class="form-group">
+					<label for="firmaSecim">Firma Seçin:</label>
+					<select name="Company_Name" class="form-control" id="firmaSecim">
+            <% Company.forEach(Product => { %>
+						<option value="<%-Product.Company_Name %>"><%-Product.Company_Name %></option>
+            <% }) %>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="kullaniciAdi">Kullanıcı Adı:</label>
+					<input name="userName" type="text" class="form-control" id="kullaniciAdi">
+				</div>
+				<div class="form-group">
+					<label for="sifre">Şifre:</label>
+          <input name="password" type="text" class="form-control" id="sifre">
+        </div>
+        <button type="submit" class="btn btn-primary">Ekle</button>
+      </form>
     </div>
   </div>
-  <div class="text-center">
-  <li class="nav-item "><a class="nav-link" href="/cycode/actions">Giriş</a></li>
-  </div>
+  
+  <!-- jQuery ve Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  
+  <script>
+    // Formu gösteren fonksiyon
+    function formuGoster() {
+      var secim = document.getElementById("secim").value;
+      if (secim == "0") {
+        document.getElementById("firmaEkle").style.display = "block";
+        document.getElementById("kullaniciEkle").style.display = "none";
+      } else {
+        document.getElementById("kullaniciEkle").style.display = "block";
+        document.getElementById("firmaEkle").style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>  
+          

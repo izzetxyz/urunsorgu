@@ -4,8 +4,11 @@ const adminController = require('../controllers/adminController');
 const validetorMiddleware = require('../middlewares/validationMiddleware');
 const authMiddleware = require('../middlewares/authMiddleware');
 
+router.get('/aartigiris', authMiddleware.oturumAcilmis, adminController.showHomePage)
+router.get('/login', authMiddleware.oturumAcilmamis, authController.showLoginForm)
 
-router.get('/', authMiddleware.oturumAcilmis, adminController.showHomePage)
+
+router.post('/login', authMiddleware.oturumAcilmamis, validetorMiddleware.validateLogin(), authController.login)
 
 
 

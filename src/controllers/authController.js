@@ -2,6 +2,7 @@ const { validationResult } = require('express-validator');
 const Admin = require('../models/adminModel');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+require('../config/passportLocal')(passport);
 
 
 /*
@@ -44,9 +45,45 @@ const showLoginForm = (req, res, next) => {
 
 
 
+const login = (req, res, next) => {
+    const hatalar = validationResult(req);
+    console.log(req.body)
+    //console.log(hatalar);
+    if (!hatalar.isEmpty()) {
+        console.log(hatalar.array());
+        req.flash('kullaniciAdi', req.body.kullaniciAdi);
+        req.flash('validation_error', hatalar.array());
+        res.redirect('/aartigiris/login');
+
+
+    } else {
+
+        passport.authenticate('local', {
+            successRedirect: '/aartigiris',
+            failureRedirect: '/aartigiris/login',
+            failureFlash: true
+        })(req, res, next);
+    }
+    req.flash('kullaniciAdi', req.body.kullaniciAdi);
+
+    //res.render('login', { layout: './layout/auth_layout' })
+};
+
+const logout = (req, res, next) => {
+    req.logout();
+    req.session.destroy((error) => {
+        res.clearCookie('connect.sid');
+        res.render('login', { layout: './layouts/adminAuth_layout', title: 'Login', success_message: [{ msg: 'Başarıyla çıkış yapıldı' }] })
+        //res.redirect('/yonetim/login');
+    });
+};
+
+
 
 
 
 module.exports = {
     showLoginForm,
+    login,
+    logout,
 }
