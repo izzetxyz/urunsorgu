@@ -5,7 +5,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
-const sql = require('mssql/msnodesqlv8');
+
 const cookieParser = require("cookie-parser");
 
 
