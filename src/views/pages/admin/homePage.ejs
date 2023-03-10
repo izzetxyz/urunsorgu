@@ -11,7 +11,11 @@
 <body>
 
 	<div class="container">
+    
 		<h2>Firmaya Kullanıcı Ekle/Firma Ekle </h2>
+    <% if (locals.validation_error != undefined || locals.success_message != undefined || locals.login_error != undefined) { %>
+      <%- include('../../partials/_mesaj') %> 
+   <% } %>
 		<!-- Kullanıcı Ekle / Firma Ekle Seçenekleri -->
 		<div class="form-group">
 			<label for="secim">Seçim Yapın:</label>
