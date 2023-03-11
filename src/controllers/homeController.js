@@ -76,7 +76,7 @@ const loginPost = async (req,res,next) => {
                     time: Date(),
                     password: req.body.Password,
                     }
-                const jwtToken = jwt.sign(data, process.env.JWT_SECRET_KEY, { expiresIn: '3d' });
+                const jwtToken = jwt.sign(data, "DAHAsoNRaDegisTireCegiMKanKaS31!31#31#", { expiresIn: '3d' });
                 const bilgiler = {
                     status: "Giriş Başarı İle Yapıldı",
                     jwtToken: jwtToken,
