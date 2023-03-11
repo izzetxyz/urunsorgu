@@ -80,7 +80,8 @@ const loginPost = async (req,res,next) => {
                 const bilgiler = {
                     status: "Giriş Başarı İle Yapıldı",
                     jwtToken: jwtToken,
-                    loggedCompany: UserFind[0].Company_Name
+                    loggedCompany: UserFind[0].Company_Name,
+                    Secret_KEY: process.env.JWT_SECRET_KEY
                 }
                 res.json(bilgiler)
             }
@@ -127,8 +128,24 @@ const dbekle = async (req, res, next) => {
 };
 const getOthers = async (req,res,next) => {
     try{
-
-        const others = await queryDatabase("SELECT * FROM urunsorgula WHERE UrunKodu = '"+req.body.UrunKodu+"'")
+        const CompanyFind = await Companies.find({Company_Name: req.body.Company_Name})
+        const sqlConfig = {
+            user: CompanyFind[0].sqlUsername,
+            password:  CompanyFind[0].sqlPassword,
+            database: CompanyFind[0].sqlDbName,
+            server: CompanyFind[0].sqlIP,
+            port: Number(CompanyFind[0].sqlPort),
+            pool: {
+            max: 10,
+            min: 0,
+            idleTimeoutMillis: 30000
+            },
+            options: {
+            encrypt: false, // for azure
+            trustServerCertificate: false // change to true for local dev / self-signed certs
+            }
+        }
+        const others = await queryDatabase("SELECT * FROM urunsorgula WHERE UrunKodu = '"+req.body.UrunKodu+"'",sqlConfig)
         res.json(others['recordsets'])
     }
     catch (err){
