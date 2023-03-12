@@ -76,7 +76,7 @@ const loginPost = async (req,res,next) => {
                     time: Date(),
                     password: req.body.Password,
                     }
-                const jwtToken = jwt.sign(data, "DAHAsoNRaDegisTireCegiMKanKaS31!31#31#", { expiresIn: '3d' });
+                const jwtToken = jwt.sign(data, process.env.JWT_SECRET_KEY, { expiresIn: '3d' });
                 const bilgiler = {
                     status: "Giriş Başarı İle Yapıldı",
                     jwtToken: jwtToken,
@@ -145,7 +145,7 @@ const getOthers = async (req,res,next) => {
             trustServerCertificate: false // change to true for local dev / self-signed certs
             }
         }
-        const others = await queryDatabase("SELECT * FROM urunsorgula WHERE UrunKodu = '"+req.body.UrunKodu+"'",sqlConfig)
+        const others = await queryDatabase("SELECT * FROM urunsorgula WHERE UrunAdi = '"+req.body.UrunAdi+"'",sqlConfig)
         res.json(others['recordsets'])
     }
     catch (err){
