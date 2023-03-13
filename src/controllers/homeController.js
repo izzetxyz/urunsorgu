@@ -146,7 +146,46 @@ const getOthers = async (req,res,next) => {
             }
         }
         const others = await queryDatabase("SELECT * FROM urunsorgula WHERE UrunAdi = '"+req.body.UrunAdi+"'",sqlConfig)
-        res.json(others['recordsets'])
+        const data = others['recordsets']
+        var Names = []
+        var myjson = []
+        others['recordsets'][0].forEach(element => {
+            if(!Names.includes(element.RenkAdi)){
+                Names.push(element.RenkAdi)
+            }
+        });
+        Names.forEach(Name => {
+            var sizes = []
+            var sizesmerkez = []
+            var sizessezon = []
+            var sizesmagaza = []
+            others['recordsets'][0].forEach(element => {
+                if(element.RenkAdi == Name){
+                    let index = sizes.findIndex(num => num > element.Beden);
+                    if (index === -1) {
+                        sizes.push(element.Beden);
+                        sizesmerkez.push(element.Merkez)
+                        sizessezon.push(element.Sezon)
+                        sizesmagaza.push(element.Magaza)
+                    } else {
+                        sizes.splice(index, 0, element.Beden);
+                        sizesmerkez.splice(index, 0 ,element.Merkez)
+                        sizessezon.splice(index, 0, element.Sezon)
+                        sizesmagaza.splice(index, 0, element.Magaza)
+                    }          
+                }
+            });
+            
+            const bilgiler = {
+                RenkAdi: Name,
+                Sizes: sizes,
+                SizesMerkez: sizesmerkez,
+                SizesMagaza: sizesmagaza,
+                SizesSezon: sizessezon
+            }
+            myjson.push(bilgiler)
+        });
+        res.json(myjson);
     }
     catch (err){
         console.log(err)
